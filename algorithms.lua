@@ -15,7 +15,8 @@ function DFS(g)
     n = g.nodes[math.random(#g.nodes)]
 
     frontier[n] = true
-    n.make_visible()
+    n.visible()
+    n.selectable()
 
     function self.draw()
         g.draw()
@@ -24,22 +25,29 @@ function DFS(g)
     function self.click(x,y)
         n = g.get_node_at(x,y)
         if frontier[n] then
+            print("zxcv")
             visited[n] = true
             n.click()
             for _, neighbor in pairs(n.neighbors()) do
                 nextfrontier[neighbor] = true
             end
         end
-        print("frontier")
-        for k,v in pairs(frontier) do print(k,v) end
-        print("visited")
-        for k,v in pairs(visited) do print(k,v) end
-        print("nextfrontier")
-        for k,v in pairs(nextfrontier) do print(k,v) end
- 
         if self.frontier_is_visited() then
             frontier = nextfrontier
             nextfrontier = {}
+        end
+
+        for k,_ in pairs(nextfrontier) do
+            k.visible()
+            k.grayed_out()
+        end
+        for k,_ in pairs(frontier) do
+            k.visible()
+            k.selectable()
+        end
+        for k,_ in pairs(visited) do
+            k.visible()
+            k.selected()
         end
     end
 
@@ -53,6 +61,4 @@ function DFS(g)
     end
 
     return self
-
 end
-

@@ -22,8 +22,8 @@ function Edge.new(node_a,node_b)
   end
 
   function self.show_nodes()
-    node_a.make_visible()
-    node_b.make_visible()
+    node_a.visible()
+    node_b.visible()
   end
 
   function self.other_node(n)

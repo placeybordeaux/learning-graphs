@@ -9,10 +9,11 @@ function Node.new(x,y)
   self.y = y + Node.r
   self.img = Node.invisible_img
   self.edges = {}
-  self.visible = false
+  self.color = {0,0,0,0}
 
   function self.draw()
-    love.graphics.draw(self.img, self.x, self.y,0,1,1,Node.r,Node.r)
+    love.graphics.setColor(self.color)
+    love.graphics.circle("fill",self.x , self.y, Node.r, 30)
   end
 
   function self.neighbors()
@@ -24,24 +25,36 @@ function Node.new(x,y)
   end
 
   function self.click()
-    self.visible = true
-    self.img = Node.selected_img
+    self.selected()
     for _, edge in pairs(self.edges) do
       edge.setVisible(true)
     end
   end
 
-  function self.invisible()
-    self.img = Node.invisible_img
+  function self.set_color(c)
+      for k,v in ipairs(c) do
+          self.color[k] = v
+      end
   end
 
-  function self.make_visible()
-    self.visible = true
-    if self.img == Node.selected_img then
-      return nil
-    else
-      self.img = Node.unselected_img
-    end
+  function self.invisible()
+    self.color[4] = 0
+  end
+
+  function self.grayed_out()
+    self.set_color({0xfe,0x3f,0x44})
+  end
+
+  function self.selectable()
+    self.set_color({0x1D,0x76,0x6F})
+  end
+
+  function self.selected()
+    self.set_color({0x33, 0xCE, 0xC3})
+  end
+
+  function self.visible()
+    self.color[4] = 255
   end
 
   function self.at(x,y)

@@ -18,12 +18,13 @@ function Graph.new(nodes,edges)
   end
 
   function self.draw()
-    for _, node in pairs(self.nodes) do
-      node.draw()
-    end
-    for _, edge in pairs(self.edges) do
+   for _, edge in pairs(self.edges) do
       edge.draw()
     end
+    for _, node in pairs(self.nodes) do
+        node.draw()
+    end
+
   end
 
   return self
