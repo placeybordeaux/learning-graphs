@@ -12,6 +12,10 @@ function love.draw()
   algo.draw()
 end
 
+function love.update()
+    algo.update()
+end
+
 function love.mousepressed(x,y,button)
   if button == "l" then
     algo.click(x,y)

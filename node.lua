@@ -1,6 +1,5 @@
 
-Node = {r = 40, selected_img = love.graphics.newImage("imgs/circle1.png"), unselected_img = love.graphics.newImage("imgs/uncircle1.png"),
-invisible_img = love.graphics.newImage("imgs/invisible.png")}
+Node = {r = 40}
 
 function Node.new(x,y)
   local self = {}
