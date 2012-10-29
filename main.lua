@@ -4,7 +4,7 @@ function love.load()
   require("edge")
   require("algorithms")
 
-  algo = DFS(Graph1())
+  algo = BFS(Graph1())
 end
 
 function love.draw()

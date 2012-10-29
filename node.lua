@@ -1,5 +1,5 @@
 
-Node = {r = 40}
+Node = {r = 35}
 
 function Node.new(x,y)
   local self = {}

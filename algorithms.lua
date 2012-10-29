@@ -19,7 +19,6 @@ function DFS(g)
     n.selectable()
 
     function self.draw()
-        print(depth)
         g.draw()
     end
 
