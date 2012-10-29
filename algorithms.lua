@@ -9,7 +9,7 @@ function DFS(g)
 
     local visited = {}
     local frontiers = {{},{}}
-    local text = ""
+    local text = "Depth First Search"
     local depth = 1
 
     n = g.nodes[math.random(#g.nodes)]
@@ -20,6 +20,17 @@ function DFS(g)
 
     function self.draw()
         g.draw()
+        love.graphics.setColor(0,0,0)
+        love.graphics.print(text, 150, 550)
+    end
+
+    function self.done()
+        for _,n in pairs(self.graph.nodes) do
+            if not visited[n] then
+                return false
+            end
+        end
+        return true
     end
 
     function self.update()
@@ -79,7 +90,7 @@ function BFS(g)
     local visited = {}
     local frontier = {}
     local nextfrontier = {}
-    local text = ""
+    local text = "Breadth First Search"
 
     n = g.nodes[math.random(#g.nodes)]
 
@@ -87,7 +98,18 @@ function BFS(g)
     n.visible()
     n.selectable()
 
+    function self.done()
+        for _,n in pairs(self.graph.nodes) do
+            if not visited[n] then
+                return false
+            end
+        end
+        return true
+    end
+
     function self.draw()
+        love.graphics.setColor(0,0,0)
+        love.graphics.print(text, 150, 550)
         g.draw()
     end
 

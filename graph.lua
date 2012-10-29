@@ -51,4 +51,24 @@ function Graph1()
   return Graph.new({a,b,c,d,e,f,g,h,i},{E,F,G,H,J,K,L,M})
 end
 
+function Graph2()
+  a = Node.new(0,0)
+  b = Node.new(0,100)
+  c = Node.new(100,0)
+  d = Node.new(100,100)
+  e = Node.new(200,200)
+  f = Node.new(300,400)
+  g = Node.new(400,70)
+  h = Node.new(400,370)
+  E = Edge.new(a,b)
+  F = Edge.new(a,c)
+  G = Edge.new(c,d)
+  H = Edge.new(b,d)
+  J = Edge.new(d,e)
+  K = Edge.new(e,f)
+  L = Edge.new(f,h)
+  M = Edge.new(f,g)
+  return Graph.new({a,b,c,d,e,f,g,h},{E,F,G,H,J,K,L,M})
+end
+
 
