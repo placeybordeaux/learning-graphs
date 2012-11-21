@@ -76,6 +76,7 @@ Array.prototype.remove = function(obj) {
         for (i = 0; i < this.length; i++) {
             if (this[i] === obj) {
                 this.splice(i,1);
+                this.remove(obj);
                 return null;
             }
         }
@@ -98,7 +99,29 @@ window.onload = function () {
         g = graphs[Math.floor(Math.random()*graphs.length)];
 
  
-        algorithm = BFS();
+        algorithm = DFS();
+
+        (function ticker() {
+            console.log("ticker");
+            for (var i = 0; i < algorithm.frontier.length; i++){
+                if(i == algorithm.frontier.length - 1){
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500, "linear", ticker);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500, "linear", ticker));
+                    }    
+                }else{
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500));
+                    }
+                }
+            }
+            for (var i = 0; i < algorithm.visited.length; i++){
+                    algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
+            }
+        })();
 };
 
 //algorithm stuff
@@ -188,7 +211,7 @@ graph.create = function (ns,es,ws) {
     edges = [];
     //node creation
     for (var i=0; i<ns.length; i++){
-        var n = r.ellipse(ns[i][0],ns[i][1],radius,radius);
+        var n = r.circle(ns[i][0],ns[i][1],radius);
         var color = Raphael.getColor();
         n.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, "opacity": 0});
         //shapes[i].drag(move, dragger, up);
