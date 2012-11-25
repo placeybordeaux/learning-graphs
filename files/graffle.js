@@ -51,7 +51,7 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         var color = typeof line == "string" ? line : "#000";
         return {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            line: this.path(path).attr({stroke: color, fill: "none"}),
+            line: this.path(path).attr({stroke: "#000", fill: "none"}),
             text: r.text(x2,y2,weight).attr({"font-weight": "bold"}),
             from: obj1,
             to: obj2
@@ -102,7 +102,6 @@ window.onload = function () {
         algorithm = DFS();
 
         (function ticker() {
-            console.log("ticker");
             for (var i = 0; i < algorithm.frontier.length; i++){
                 if(i == algorithm.frontier.length - 1){
                     if (algorithm.frontier[i].attr("r") == 10){
@@ -212,7 +211,7 @@ graph.create = function (ns,es,ws) {
     //node creation
     for (var i=0; i<ns.length; i++){
         var n = r.circle(ns[i][0],ns[i][1],radius);
-        var color = Raphael.getColor();
+        var color = Raphael.getColor(1);
         n.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, "opacity": 0});
         //shapes[i].drag(move, dragger, up);
         n.click(click);
