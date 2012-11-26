@@ -1,6 +1,8 @@
 Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
+    var fill_opacity = 0.75;
     if(!weight){
         weight = "";
+        fill_opacity = 0;
     }
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
@@ -37,7 +39,8 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         y1 = p[res[0]].y,
         x4 = p[res[1]].x,
         y4 = p[res[1]].y;
-    var t = r.text((x1+x4)/2,(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 17})
+    var c = r.circle((x1+x4)/2,(y1+y4)/2,10).attr({"stroke-width": 0, fill: "000", "fill-opacity": fill_opacity});
+    var t = r.text((x1+x4)/2,(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 17});
     dx = Math.max(Math.abs(x1 - x4) / 2, 10);
     dy = Math.max(Math.abs(y1 - y4) / 2, 10);
     var x2 = [x1, x1, x1 - dx, x1 + dx][res[0]].toFixed(3),
@@ -58,10 +61,14 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
             line: this.path(path).attr({stroke: "#5A6351", "stroke-width": 3, fill: "none"}),
             from: obj1,
             to: obj2,
-            weight: parseInt(weight)
+            weight: parseInt(weight),
+            backdrop_for_text: c
         }
         return_obj.line.p = return_obj;
         return_obj.text.p = return_obj;
+        return_obj.backdrop_for_text.p = return_obj;
+        return_obj.backdrop_for_text.toFront();
+        return_obj.text.toFront();
         return return_obj;
     }
 };
@@ -119,10 +126,10 @@ window.onload = function () {
 
 
 
-        g = weighted_graphs[Math.floor(Math.random()*graphs.length)];
+        g = graphs[Math.floor(Math.random()*graphs.length)];
 
  
-        algorithm = Prims();
+        algorithm = DFS();
 
         (function ticker() {
             for (var i = 0; i < algorithm.frontier.length; i++){
@@ -175,6 +182,7 @@ var Prims = function() {
         g.edges[i].text.animate({"opacity": 1},500);
         g.edges[i].line.show();
         g.edges[i].text.show();
+        g.edges[i].backdrop_for_text.show();
     }
     a.click = function (e){
         if('p' in e){
@@ -299,6 +307,7 @@ graph.create = function (ns,es,ws) {
         c.text.attr({"opacity": 0});
         c.line.hide();
         c.text.hide();
+        c.backdrop_for_text.hide();
         edges.push(c);
     };
     return {nodes: nodes,edges: edges, neighbors: graph.neighbors, get_edges: graph.get_edges};
