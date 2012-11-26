@@ -108,7 +108,10 @@ window.onload = function () {
         graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
                 [[0,2],[0,1],[1,3],[1,4],[2,5]]),
         graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
-                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]])
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
+ 
  
             ];
 
@@ -121,17 +124,20 @@ window.onload = function () {
                 [5,3,3,4,1,2]),
         graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
                 [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
-                [1,3,2,5,2,3,4,2])
+                [1,3,2,5,2,3,4,2]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
+                [3,4,5,6,4,3,4,7,3,1,3,2,3])
  
             ];
 
 
 
-        g = weighted_graphs[Math.floor(Math.random()*graphs.length)];
+        g = weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
 
 
  
-        algorithm = Kruskals();
+        algorithm = BFS();
         r.safari();
 
         (function ticker() {
@@ -186,41 +192,51 @@ var Kruskals = function() {
         g.edges[i].backdrop_for_text.show();
     }
     a.click = function (e){
-        if('p' in e){
-            console.log(e);
+       if('p' in e){
             e = e.p;
+                 for(var i=0; i<g.edges.length; i++){
+                        var c = e.to;
+                        b = e.from;
+                        while(c.pointer != c){
+                            c = c.pointer;
+                        }
+                        while(b.pointer != b){
+                            b = b.pointer;
+                        }
+                        if(b == c){
+                            g.edges.remove(e);
+                        }
+                }
                 console.log(e);
                 for(var i=0; i< g.edges.length; i++){
                     if(e.weight > g.edges[i].weight){
                         return false;
                     }
                 }
-            console.log(e);
-                var a = e.to,
+                var c = e.to,
                 b = e.from;
-                while(a.pointer != a){
-                    a = a.pointer;
+                while(c.pointer != c){
+                    c = c.pointer;
                 }
                 while(b.pointer != b){
                     b = b.pointer;
                 }
-                if(b == a){
+                if(b == c){
+                    console.log("same root node");
                     return false;
                 }
-            console.log(e);
-                if(b.rank > a.rank){
-                    a.pointer = b;
-                }else if(a.rank > b.rank){
-                    b.pointer = a;
+                if(b.rank > c.rank){
+                    c.pointer = b;
+                }else if(c.rank > b.rank){
+                    b.pointer = c;
                 }else {
                     b.rank++;
-                    a.pointer = b;
+                    c.pointer = b;
                 }
                 g.edges.remove(e);
                 e.to.animate({"fill-opacity": 1}, 500);
                 e.from.animate({"fill-opacity": 1}, 500);
                 e.line.animate({"stroke": "#49E20E"},500);
- 
             }
     }
     return a;
