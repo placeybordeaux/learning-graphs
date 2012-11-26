@@ -51,14 +51,14 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         var color = typeof line == "string" ? line : "#000";
         var return_obj = {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            text: r.text(5+(x1+x4)/2,5+(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 13}),
+            text: r.text((x1+x4)/2,(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 15}),
             line: this.path(path).attr({stroke: "#5A6351", "stroke-width": 3, fill: "none"}),
             from: obj1,
             to: obj2,
             weight: parseInt(weight)
         }
-        return_obj.line.parent = return_obj;
-        return_obj.text.parent = return_obj;
+        return_obj.line.p = return_obj;
+        return_obj.text.p = return_obj;
         return return_obj;
     }
 };
@@ -91,8 +91,9 @@ window.onload = function () {
         r = Raphael("holder", 640, 480);
 
         var graphs = [
-        graph.create([[20,20],[80,20],[20,80],[80,80],[80,140],[140,80]],
-                [[0,2],[0,1],[1,3],[3,4],[3,5]]),
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
+ 
         graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
                 [[0,2],[0,1],[1,3],[1,4],[2,5]]),
         graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
@@ -108,8 +109,8 @@ window.onload = function () {
                 [[0,2],[0,1],[1,3],[1,4],[2,5]],
                 [5,3,3,4,1,2]),
         graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
-                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]],
-                [1,3,2,5,2,3,4])
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
+                [1,3,2,5,2,3,4,2])
  
             ];
 
@@ -163,12 +164,12 @@ var Prims = function() {
         g.nodes[i].animate({"opacity": 1},500);
     }
     for(var i=0;i<g.edges.length;i++){
-        g.edges[i].line.animate({"opacity": 0.8},500);
+        g.edges[i].line.animate({"opacity": 0.6},500);
         g.edges[i].text.animate({"opacity": 1},500);
     }
     a.click = function (e){
-        if('parent' in e){
-            e = e.parent;
+        if('p' in e){
+            e = e.p;
             if(a.visited.contains(e.to) ^ a.visited.contains(e.from)){
                 for(var i=0; i< a.visited.length; i++){
                     var n = a.visited[i];
@@ -255,6 +256,7 @@ var reveal_from_node = function (n) {
  
 //click function
 var click = function () {
+    console.log(this.id);
     algorithm.click(this);
 };
 
@@ -281,6 +283,7 @@ graph.create = function (ns,es,ws) {
             var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff");
         }
         c.line.click(click);
+        c.text.click(click);
         c.line.attr({"opacity": 0});
         c.text.attr({"opacity": 0});
         edges.push(c);
