@@ -49,13 +49,17 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         line.line.attr({path: path});
     } else {
         var color = typeof line == "string" ? line : "#000";
-        return {
+        var return_obj = {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            line: this.path(path).attr({stroke: "#000", fill: "none"}),
-            text: r.text(x2,y2,weight).attr({"font-weight": "bold"}),
+            text: r.text(5+(x1+x4)/2,5+(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 13}),
+            line: this.path(path).attr({stroke: "#5A6351", "stroke-width": 3, fill: "none"}),
             from: obj1,
-            to: obj2
-        };
+            to: obj2,
+            weight: parseInt(weight)
+        }
+        return_obj.line.parent = return_obj;
+        return_obj.text.parent = return_obj;
+        return return_obj;
     }
 };
 
@@ -96,10 +100,25 @@ window.onload = function () {
  
             ];
 
-        g = graphs[Math.floor(Math.random()*graphs.length)];
+        weighted_graphs= [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
+                [1,2,3,4,5,6,2,3,2,1]),
+        graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]],
+                [5,3,3,4,1,2]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]],
+                [1,3,2,5,2,3,4])
+ 
+            ];
+
+
+
+        g = weighted_graphs[Math.floor(Math.random()*graphs.length)];
 
  
-        algorithm = DFS();
+        algorithm = Prims();
 
         (function ticker() {
             for (var i = 0; i < algorithm.frontier.length; i++){
@@ -133,6 +152,47 @@ algo.create = function () {
             next_frontier: []
     };
 };
+
+var Prims = function() {
+    a = algo.create();
+    var temp = a.frontier[0];
+    a.frontier.remove(temp);
+    a.visited.push(temp);
+    temp.animate({"fill-opacity": 1},500);
+    for(var i=0;i<g.nodes.length;i++){
+        g.nodes[i].animate({"opacity": 1},500);
+    }
+    for(var i=0;i<g.edges.length;i++){
+        g.edges[i].line.animate({"opacity": 0.8},500);
+        g.edges[i].text.animate({"opacity": 1},500);
+    }
+    a.click = function (e){
+        if('parent' in e){
+            e = e.parent;
+            if(a.visited.contains(e.to) ^ a.visited.contains(e.from)){
+                for(var i=0; i< a.visited.length; i++){
+                    var n = a.visited[i];
+                    var edges = g.get_edges(n);
+                    for(var j=0; j < edges.length;j++){
+                        if(a.visited.contains(edges[j].to) ^ a.visited.contains(edges[j].from)){
+                            if(edges[j].weight < e.weight){
+                                return false
+                            }
+                        }
+                    }
+                }
+                e.to.animate({"fill-opacity": 1}, 500);
+                e.from.animate({"fill-opacity": 1}, 500);
+                a.visited.remove(e.to);
+                a.visited.remove(e.from);
+                a.visited.push(e.to);
+                a.visited.push(e.from);
+                e.line.animate({"stroke": "#49E20E"},500);
+                }
+            }
+        }
+    return a;
+    }
 
 var DFS = function (){
     a = algo.create();
@@ -181,8 +241,6 @@ var BFS = function (){
     return a;
 };
 
-
-
 var reveal_from_node = function (n) {
         var ns = g.neighbors(n);
         for (var i=0;i<ns.length;i++){
@@ -195,8 +253,6 @@ var reveal_from_node = function (n) {
         }
 };
  
-    
-
 //click function
 var click = function () {
     algorithm.click(this);
@@ -224,6 +280,7 @@ graph.create = function (ns,es,ws) {
         }else{
             var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff");
         }
+        c.line.click(click);
         c.line.attr({"opacity": 0});
         c.text.attr({"opacity": 0});
         edges.push(c);
