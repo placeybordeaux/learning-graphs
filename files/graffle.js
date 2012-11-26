@@ -144,6 +144,8 @@ window.onload = function () {
                     algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
             }
         })();
+        
+        r.safari();
 };
 
 //algorithm stuff
