@@ -41,6 +41,7 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         y4 = p[res[1]].y;
     var c = r.circle((x1+x4)/2,(y1+y4)/2,10).attr({"stroke-width": 0, fill: "000", "fill-opacity": fill_opacity});
     var t = r.text((x1+x4)/2,(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 17});
+    r.safari();
     dx = Math.max(Math.abs(x1 - x4) / 2, 10);
     dy = Math.max(Math.abs(y1 - y4) / 2, 10);
     var x2 = [x1, x1, x1 - dx, x1 + dx][res[0]].toFixed(3),
@@ -126,10 +127,12 @@ window.onload = function () {
 
 
 
-        g = graphs[Math.floor(Math.random()*graphs.length)];
+        g = weighted_graphs[Math.floor(Math.random()*graphs.length)];
+
 
  
-        algorithm = DFS();
+        algorithm = Kruskals();
+        r.safari();
 
         (function ticker() {
             for (var i = 0; i < algorithm.frontier.length; i++){
@@ -152,7 +155,6 @@ window.onload = function () {
             }
         })();
         
-        r.safari();
 };
 
 //algorithm stuff
@@ -166,6 +168,67 @@ algo.create = function () {
             next_frontier: []
     };
 };
+
+var Kruskals = function() {
+    a = algo.create();
+    a.frontier.pop();
+    for(var i=0;i<g.nodes.length;i++){
+        g.nodes[i].animate({"opacity": 1},500);
+        g.nodes[i].show();
+        g.nodes[i].rank = 0;
+        g.nodes[i].pointer = g.nodes[i];
+    }
+    for(var i=0;i<g.edges.length;i++){
+        g.edges[i].line.animate({"opacity": 0.6},500);
+        g.edges[i].text.animate({"opacity": 1},500);
+        g.edges[i].line.show();
+        g.edges[i].text.show();
+        g.edges[i].backdrop_for_text.show();
+    }
+    a.click = function (e){
+        if('p' in e){
+            console.log(e);
+            e = e.p;
+                console.log(e);
+                for(var i=0; i< g.edges.length; i++){
+                    if(e.weight > g.edges[i].weight){
+                        return false;
+                    }
+                }
+            console.log(e);
+                var a = e.to,
+                b = e.from;
+                while(a.pointer != a){
+                    a = a.pointer;
+                }
+                while(b.pointer != b){
+                    b = b.pointer;
+                }
+                if(b == a){
+                    return false;
+                }
+            console.log(e);
+                if(b.rank > a.rank){
+                    a.pointer = b;
+                }else if(a.rank > b.rank){
+                    b.pointer = a;
+                }else {
+                    b.rank++;
+                    a.pointer = b;
+                }
+                g.edges.remove(e);
+                e.to.animate({"fill-opacity": 1}, 500);
+                e.from.animate({"fill-opacity": 1}, 500);
+                e.line.animate({"stroke": "#49E20E"},500);
+ 
+            }
+    }
+    return a;
+}
+
+
+
+ 
 
 var Prims = function() {
     a = algo.create();
