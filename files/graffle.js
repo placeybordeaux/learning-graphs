@@ -39,7 +39,7 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         y1 = p[res[0]].y,
         x4 = p[res[1]].x,
         y4 = p[res[1]].y;
-    var c = r.circle((x1+x4)/2,(y1+y4)/2,10).attr({"stroke-width": 0, fill: "000", "fill-opacity": fill_opacity});
+    var c = r.circle((x1+x4)/2,(y1+y4)/2,10).attr({"stroke-width": 0, fill: "#FFF", "fill-opacity": fill_opacity, "color": "#FFF"});
     var t = r.text((x1+x4)/2,(y1+y4)/2,weight).attr({"font-weight": "bold","font-size": 17});
     r.safari();
     dx = Math.max(Math.abs(x1 - x4) / 2, 10);
@@ -137,7 +137,7 @@ window.onload = function () {
 
 
  
-        algorithm = BFS();
+        algorithm = Prims();
         r.safari();
 
         (function ticker() {
@@ -382,6 +382,7 @@ graph.create = function (ns,es,ws) {
         }
         c.line.click(click);
         c.text.click(click);
+        c.backdrop_for_text.click(click);
         c.line.attr({"opacity": 0});
         c.text.attr({"opacity": 0});
         c.line.hide();
