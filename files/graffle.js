@@ -135,10 +135,22 @@ window.onload = function () {
 
         g = weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
 
+        notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
 
- 
-        algorithm = Prims();
+        set_text = function (t) {
+            notice_text.attr({"text": t});
+            notice_text.animate({"opacity": 1}, 500, function () {notice_text.animate({"opacity": 0}, 5000)});
+        }
+        algorithm = Kruskals();
         r.safari();
+
+        img = r.image("files/dholler_ok.png",200,100,200,200).hide();
+
+        success = (function () {
+            img.show();
+            img.animate({"transform": "s4"}, 2000);
+            img.animate({"opacity": 0}, 2000);
+        });
 
         (function ticker() {
             for (var i = 0; i < algorithm.frontier.length; i++){
@@ -207,10 +219,10 @@ var Kruskals = function() {
                             g.edges.remove(e);
                         }
                 }
-                console.log(e);
                 for(var i=0; i< g.edges.length; i++){
                     if(e.weight > g.edges[i].weight){
                         return false;
+                        set_text("There is an edge with a lower weight");
                     }
                 }
                 var c = e.to,
@@ -222,7 +234,7 @@ var Kruskals = function() {
                     b = b.pointer;
                 }
                 if(b == c){
-                    console.log("same root node");
+                    set_text("These nodes are already connected");
                     return false;
                 }
                 if(b.rank > c.rank){
@@ -238,6 +250,9 @@ var Kruskals = function() {
                 e.from.animate({"fill-opacity": 1}, 500);
                 e.line.animate({"stroke": "#49E20E"},500);
             }
+       if(g.edges.length == 0){
+           success();
+       }
     }
     return a;
 }
@@ -252,16 +267,10 @@ var Prims = function() {
     a.frontier.remove(temp);
     a.visited.push(temp);
     temp.animate({"fill-opacity": 1},500);
+    reveal_from_node(temp);
     for(var i=0;i<g.nodes.length;i++){
-        g.nodes[i].animate({"opacity": 1},500);
-        g.nodes[i].show();
-    }
-    for(var i=0;i<g.edges.length;i++){
-        g.edges[i].line.animate({"opacity": 0.6},500);
-        g.edges[i].text.animate({"opacity": 1},500);
-        g.edges[i].line.show();
-        g.edges[i].text.show();
-        g.edges[i].backdrop_for_text.show();
+        //g.nodes[i].animate({"opacity": 1},500);
+        //g.nodes[i].show();
     }
     a.click = function (e){
         if('p' in e){
@@ -273,6 +282,7 @@ var Prims = function() {
                     for(var j=0; j < edges.length;j++){
                         if(a.visited.contains(edges[j].to) ^ a.visited.contains(edges[j].from)){
                             if(edges[j].weight < e.weight){
+                                set_text("There is an edge with a lower weight");
                                 return false
                             }
                         }
@@ -280,14 +290,22 @@ var Prims = function() {
                 }
                 e.to.animate({"fill-opacity": 1}, 500);
                 e.from.animate({"fill-opacity": 1}, 500);
+                reveal_from_node(e.to);
+                reveal_from_node(e.from);
                 a.visited.remove(e.to);
                 a.visited.remove(e.from);
                 a.visited.push(e.to);
                 a.visited.push(e.from);
                 e.line.animate({"stroke": "#49E20E"},500);
-                }
-            }
+            }else if(a.visited.contains(e.to) && a.visited.contains(e.from)){
+                set_text("These two edges are already connected");
         }
+        if(a.visited.length == g.nodes.length){
+            success();
+        }
+ 
+        }
+    }
     return a;
     }
 
@@ -310,6 +328,11 @@ var DFS = function (){
             while(a.frontier.length == 0 && a.next_frontier.length > 0){
                 a.frontier = a.next_frontier.pop();
             }
+        }else {
+            set_text("Try clicking the flashing nodes");
+        }
+        if(a.visited.length == g.nodes.length){
+            success();
         }
     }
     return a;
@@ -333,7 +356,13 @@ var BFS = function (){
                 a.frontier = a.next_frontier;
                 a.next_frontier = [];
             }
+        }else{
+            set_text("Try clicking the flashing nodes");
         }
+        if(a.visited.length == g.nodes.length){
+            success();
+        }
+ 
     }
     return a;
 };
@@ -361,6 +390,7 @@ var click = function () {
 //graph functions
 var graph = {};
 graph.create = function (ns,es,ws) {
+    Raphael.getColor.reset();
     var radius = 10,
     nodes = [],
     edges = [];
