@@ -139,9 +139,10 @@ window.onload = function () {
 
         set_text = function (t) {
             notice_text.attr({"text": t});
-            notice_text.animate({"opacity": 1}, 500, function () {notice_text.animate({"opacity": 0}, 5000)});
-        }
-        algorithm = Kruskals();
+            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<")});
+        };
+
+        algorithm = Prims();
         r.safari();
 
         img = r.image("files/dholler_ok.png",200,100,200,200).hide();
@@ -149,7 +150,7 @@ window.onload = function () {
         success = (function () {
             img.show();
             img.animate({"transform": "s4"}, 2000);
-            img.animate({"opacity": 0}, 2000);
+            img.animate({"opacity": 0}, 2000, img.hide);
         });
 
         (function ticker() {
@@ -203,26 +204,30 @@ var Kruskals = function() {
         g.edges[i].text.show();
         g.edges[i].backdrop_for_text.show();
     }
+    a.counter = 0;
     a.click = function (e){
        if('p' in e){
             e = e.p;
-                 for(var i=0; i<g.edges.length; i++){
-                        var c = e.to;
-                        b = e.from;
-                        while(c.pointer != c){
-                            c = c.pointer;
-                        }
-                        while(b.pointer != b){
-                            b = b.pointer;
-                        }
-                        if(b == c){
-                            g.edges.remove(e);
-                        }
-                }
+            var j=0;
+             while(j<g.edges.length){
+                    var c = g.edges[j].to;
+                    b = g.edges[j].from;
+                    while(c.pointer != c){
+                        c = c.pointer;
+                    }
+                    while(b.pointer != b){
+                        b = b.pointer;
+                    }
+                    if(b == c){
+                        g.edges.remove(g.edges[j]);
+                    }else{
+                        j++;
+                    }
+            }
                 for(var i=0; i< g.edges.length; i++){
                     if(e.weight > g.edges[i].weight){
-                        return false;
                         set_text("There is an edge with a lower weight");
+                        return false;
                     }
                 }
                 var c = e.to,
@@ -249,8 +254,10 @@ var Kruskals = function() {
                 e.to.animate({"fill-opacity": 1}, 500);
                 e.from.animate({"fill-opacity": 1}, 500);
                 e.line.animate({"stroke": "#49E20E"},500);
+                a.counter++;
             }
-       if(g.edges.length == 0){
+       console.log(g.edges.length);
+       if(g.nodes.length == a.counter + 1){
            success();
        }
     }
@@ -268,10 +275,6 @@ var Prims = function() {
     a.visited.push(temp);
     temp.animate({"fill-opacity": 1},500);
     reveal_from_node(temp);
-    for(var i=0;i<g.nodes.length;i++){
-        //g.nodes[i].animate({"opacity": 1},500);
-        //g.nodes[i].show();
-    }
     a.click = function (e){
         if('p' in e){
             e = e.p;
@@ -377,6 +380,7 @@ var reveal_from_node = function (n) {
         for (var i=0;i<es.length;i++){
             es[i].line.show();
             es[i].text.show();
+            es[i].backdrop_for_text.show();
             es[i].line.animate({"opacity": 1}, 500);
             es[i].text.animate({"opacity": 1}, 500);
         }
@@ -406,7 +410,7 @@ graph.create = function (ns,es,ws) {
     //edge creation
     for (var i=0; i<es.length; i++){
         if(ws){
-            var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff", ws[i]);
+            var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff", Math.ceil((Math.random()*7)));
         }else{
             var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff");
         }
