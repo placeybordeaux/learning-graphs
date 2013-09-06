@@ -1,4 +1,3 @@
-//makes the lines that connect the nodes
 Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
     var fill_opacity = 0.75;
     if(!weight){
@@ -98,7 +97,10 @@ Array.prototype.remove = function(obj) {
         }
 };
 
-var get_graph = function (weighted) {
+var el;
+var BFSinit = function () {
+        r = Raphael("holder", 640, 480);
+
         graphs = [
         graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
                 [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
@@ -129,18 +131,163 @@ var get_graph = function (weighted) {
  
             ];
 
-	if(weighted){
-		return weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
-	}
-		return graphs[Math.floor(Math.random()*weighted_graphs.length)];
-}
 
 
-var el;
-window.onload = function () {
+        g = graphs[Math.floor(Math.random()*weighted_graphs.length)];
+
+        notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
+
+        set_text = function (t) {
+            notice_text.attr({"text": t});
+            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<")});
+        };
+
+        algorithm = BFS();
+        r.safari();
+
+        img = r.image("excercises/dholler_ok.png",200,100,200,200).hide();
+
+        success = (function () {
+            img.show();
+            img.animate({"transform": "s4"}, 2000);
+            img.animate({"opacity": 0}, 2000, img.hide);
+        });
+
+        (function ticker() {
+            for (var i = 0; i < algorithm.frontier.length; i++){
+                if(i == algorithm.frontier.length - 1){
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500, "linear", ticker);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500, "linear", ticker));
+                    }    
+                }else{
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500));
+                    }
+                }
+            }
+            for (var i = 0; i < algorithm.visited.length; i++){
+                    algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
+            }
+        })();
+        
+};
+var DFSinit = function () {
         r = Raphael("holder", 640, 480);
 
-	g = get_graph(true);
+        graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
+ 
+        graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
+ 
+ 
+            ];
+
+        weighted_graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
+                [1,2,3,4,5,6,2,3,2,1]),
+        graph.create([[240,20],[200,120],[280,120],[160,220],[240,220],[300,220]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]],
+                [5,3,3,4,1,2]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
+                [1,3,2,5,2,3,4,2]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
+                [3,4,5,6,4,3,4,7,3,1,3,2,3])
+ 
+            ];
+
+
+
+        g = graphs[Math.floor(Math.random()*weighted_graphs.length)];
+
+        notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
+
+        set_text = function (t) {
+            notice_text.attr({"text": t});
+            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<")});
+        };
+
+        algorithm = DFS();
+        r.safari();
+
+        img = r.image("excercises/dholler_ok.png",200,100,200,200).hide();
+
+        success = (function () {
+            img.show();
+            img.animate({"transform": "s4"}, 2000);
+            img.animate({"opacity": 0}, 2000, img.hide);
+        });
+
+        (function ticker() {
+            for (var i = 0; i < algorithm.frontier.length; i++){
+                if(i == algorithm.frontier.length - 1){
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500, "linear", ticker);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500, "linear", ticker));
+                    }    
+                }else{
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500));
+                    }
+                }
+            }
+            for (var i = 0; i < algorithm.visited.length; i++){
+                    algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
+            }
+        })();
+        
+};
+var PrimsInit = function () {
+        r = Raphael("holder", 640, 480);
+
+        graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
+ 
+        graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
+ 
+ 
+            ];
+
+        weighted_graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
+                [1,2,3,4,5,6,2,3,2,1]),
+        graph.create([[240,20],[200,120],[280,120],[160,220],[240,220],[300,220]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]],
+                [5,3,3,4,1,2]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
+                [1,3,2,5,2,3,4,2]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
+                [3,4,5,6,4,3,4,7,3,1,3,2,3])
+ 
+            ];
+
+
+
+        g = weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
 
         notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
 
@@ -152,7 +299,84 @@ window.onload = function () {
         algorithm = Prims();
         r.safari();
 
-        img = r.image("files/dholler_ok.png",200,100,200,200).hide();
+        img = r.image("excercises/dholler_ok.png",200,100,200,200).hide();
+
+        success = (function () {
+            img.show();
+            img.animate({"transform": "s4"}, 2000);
+            img.animate({"opacity": 0}, 2000, img.hide);
+        });
+
+        (function ticker() {
+            for (var i = 0; i < algorithm.frontier.length; i++){
+                if(i == algorithm.frontier.length - 1){
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500, "linear", ticker);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500, "linear", ticker));
+                    }    
+                }else{
+                    if (algorithm.frontier[i].attr("r") == 10){
+                        algorithm.frontier[i].animate({"r": 13}, 500);
+                    }else{
+                        algorithm.frontier[i].animate(Raphael.animation({"r": 10}, 500));
+                    }
+                }
+            }
+            for (var i = 0; i < algorithm.visited.length; i++){
+                    algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
+            }
+        })();
+        
+};
+var KruskalsInit = function () {
+        r = Raphael("holder", 640, 480);
+
+        graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
+ 
+        graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
+ 
+ 
+            ];
+
+        weighted_graphs = [
+        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
+                [1,2,3,4,5,6,2,3,2,1]),
+        graph.create([[240,20],[200,120],[280,120],[160,220],[240,220],[300,220]],
+                [[0,2],[0,1],[1,3],[1,4],[2,5]],
+                [5,3,3,4,1,2]),
+        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
+                [1,3,2,5,2,3,4,2]),
+        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
+                [3,4,5,6,4,3,4,7,3,1,3,2,3])
+ 
+            ];
+
+
+
+        g = weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
+
+        notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
+
+        set_text = function (t) {
+            notice_text.attr({"text": t});
+            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<")});
+        };
+
+        algorithm = Kruskals();
+        r.safari();
+
+        img = r.image("excercises/dholler_ok.png",200,100,200,200).hide();
 
         success = (function () {
             img.show();
@@ -271,13 +495,17 @@ var Kruskals = function() {
     return a;
 }
 
+
+
+ 
+
 var Prims = function() {
     a = algo.create();
-    var to_reveal = a.frontier[0];
-    a.frontier.remove(to_reveal);
-    a.visited.push(to_reveal);
-    to_reveal.animate({"fill-opacity": 1},500);
-    reveal_from_node(to_reveal);
+    var temp = a.frontier[0];
+    a.frontier.remove(temp);
+    a.visited.push(temp);
+    temp.animate({"fill-opacity": 1},500);
+    reveal_from_node(temp);
     a.click = function (e){
         if('p' in e){
             e = e.p;
@@ -352,10 +580,10 @@ var BFS = function (){
             reveal_from_node(n);
             a.frontier.remove(n);
             a.visited.push(n);
-            var nodes_ = g.neighbors(n);
-            for (var i=0;i<nodes_.length;i++){
-                if(!(a.visited.contains(nodes_[i]))){
-                    a.next_frontier.push(nodes_[i]);
+            var ns = g.neighbors(n);
+            for (var i=0;i<ns.length;i++){
+                if(!(a.visited.contains(ns[i]))){
+                    a.next_frontier.push(ns[i]);
                 }
             }
             while(a.frontier.length == 0 && a.next_frontier.length > 0){
@@ -363,31 +591,29 @@ var BFS = function (){
                 a.next_frontier = [];
             }
         }else{
-	    //clicked a node that can't be explored
             set_text("Try clicking the flashing nodes");
         }
         if(a.visited.length == g.nodes.length){
             success();
         }
+ 
     }
     return a;
 };
 
-//shows everything related to the node and it's neighbors
 var reveal_from_node = function (n) {
-        var nodes_ = g.neighbors(n);
-        for (var i=0;i<nodes_.length;i++){
-            nodes_[i].animate({"opacity": 1}, 500);
-            nodes_[i].show();
-            nodes_[i].da_glow.show();
+        var ns = g.neighbors(n);
+        for (var i=0;i<ns.length;i++){
+            ns[i].animate({"opacity": 1}, 500);
+            ns[i].show();
         }
-        var edges_ = g.get_edges(n);
-        for (var i=0;i<edges_.length;i++){
-            edges_[i].line.show();
-            edges_[i].text.show();
-            edges_[i].backdrop_for_text.show();
-            edges_[i].line.animate({"opacity": 1}, 500);
-            edges_[i].text.animate({"opacity": 1}, 500);
+        var es = g.get_edges(n);
+        for (var i=0;i<es.length;i++){
+            es[i].line.show();
+            es[i].text.show();
+            es[i].backdrop_for_text.show();
+            es[i].line.animate({"opacity": 1}, 500);
+            es[i].text.animate({"opacity": 1}, 500);
         }
 };
  
@@ -398,27 +624,26 @@ var click = function () {
 
 //graph functions
 var graph = {};
-graph.create = function (nodes_,edges_,weights_) {
+graph.create = function (ns,es,ws) {
     Raphael.getColor.reset();
     var radius = 10,
     nodes = [],
     edges = [];
     //node creation
-    for (var i=0; i<nodes_.length; i++){
-        var n = r.circle(nodes_[i][0],nodes_[i][1],radius);
+    for (var i=0; i<ns.length; i++){
+        var n = r.circle(ns[i][0],ns[i][1],radius);
         var color = Raphael.getColor(1);
         n.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, "opacity": 0});
         n.click(click);
         n.hide();
-        n.da_glow = n.glow({"width": 3, "opacity": 0.25}).hide();
         nodes.push(n);
     };
     //edge creation
-    for (var i=0; i<edges_.length; i++){
-        if(weights_){
-            var c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff", Math.ceil((Math.random()*7)));
+    for (var i=0; i<es.length; i++){
+        if(ws){
+            var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff", Math.ceil((Math.random()*7)));
         }else{
-            var c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff");
+            var c = r.connection(nodes[es[i][0]],nodes[es[i][1]], "#fff");
         }
         c.line.click(click);
         c.text.click(click);

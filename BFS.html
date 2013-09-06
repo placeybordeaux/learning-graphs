@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Graphs in Computer Science</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+  	<div id="wrap">
+	  	<div class="navbar navbar-inverse navbar-static-top">
+	  		<div class="navbar-inner">
+	  			<div class="navigation-width-percent container">
+	  				<a class="brand" href="index.html">Graphs in Computer Science</a>
+					<ul class="nav">
+						<li class="active"><!--dropdown -->
+							<a href="BFS.html">Breadth-First Search</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="BFS.html#tab_tab1">Overview</a>
+									<a href="BFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+							-->
+						</li>
+						<li class="dropdown">
+							<a href="DFS.html">Depth-First Search</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="DFS.html#tab_tab1">Overview</a>
+									<a href="DFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li> <!--class="dropdown"-->
+							<a href="Djikstra.html">Dijkstra's Algorithm</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Djikstra.html#tab_tab1">Overview</a>
+									<a href="Djikstra.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>-->
+						</li>
+						<li class="dropdown">
+							<a href="Prim.html">Prim's Algorithm</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Prim.html#tab_tab1">Overview</a>
+									<a href="Prim.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="Kruskal.html">Kruskal's Algorithm</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Kruskal.html#tab_tab1">Overview</a>
+									<a href="Kruskal.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>	
+						<li>
+							<a href="Resources.html">More Resources</a>
+						</li>	
+					</ul>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	
+	  	<div class="post-nav-pad hero-unit logo">
+	  		<h1>Breadth-First Search</h1>
+	  		<p>A graph search procedure</p>
+	  	</div>
+	  	<div class="container-fluid">
+	  		<div class="tabbable tabs-left">
+	  			<ul class="nav nav-tabs">
+	  				<li class="active">
+	  					<a href="#tab1" data-toggle="tab">Overview</a>
+	  				</li>
+	  				<li>
+	  					<a href="#tab2" data-toggle="tab">Excercises</a>
+	  				</li>
+	  			</ul>
+	  			<div class="tab-content">
+	  				<div class="tab-pane active" id="tab1">
+	  					<div class="page-header">
+	  						<h1><!--Graphs --><small>Overview</small></h1>
+	  					</div>
+	  					<p>
+	  						Breadth-first search is a type of graph search.  It explores the vertices of a graph.  Breadth-first search starts at a node in the graph.  From there, it explores the rest of the vertices, starting with the start's neighbors.
+						</p>
+						<p>
+							Nodes that are two edges away from the are explored next, followed by nodes that are three edges away from the start, and so forth.
+						</p>
+						<div class="moviewrapper">
+							<iframe width="640" height="360" src="http://www.youtube.com/embed/YYHeXhfwg3g" frameborder="0" allowfullscreen></iframe>
+						</div>
+						<p>
+							<bold>Pseudo Code</bold>
+						</p>
+						<p>
+							<bold>Input:</bold> A graph G and a root v of G<br/>
+							<bold>Output:</bold> A goal node t if it exists.<br/>
+							<ol class="codelist">
+								<li>procedure BFS(G,v):</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;create a queue Q</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;enqueue v onto Q</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;mark v</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;while Q is not empty:</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t = Q.dequeue()</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if t is what we are looking for:</li>
+								              <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return t</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for all edges e in G.adjacentEdges(t) do</li>
+								             <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u = G.adjacentVertex(t,e)</li>
+								             <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if u is not marked:</li>
+								                  <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mark u</li>
+								                  <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enqueue u onto Q</li>
+		               		</ol>	
+	               		<p>
+	               			<bold>Complexity</bold><br/>
+	               		</p>
+						<p>
+							Time Complexity: O(|V| + |E|)<br/>
+							Space Complexity: O(|V|)<br/>
+						</p>
+						<p>
+							<bold>Sources</bold>
+							<ul>
+								<li>http://en.wikipedia.org/wiki/Breadth-first_search</li>
+								<li>http://www.cs.berkeley.edu/~vazirani/algorithms/all.pdf</li>
+							</ul>
+						</p>
+						<p class="pull-left" style="padding-top:50px;padding-bottom:50px;">
+							<a href="index.html">&#60; Previous (Welcome!)</a>
+						</p>
+						<p class="pull-right" style="padding-top:50px;padding-bottom:50px;">
+							<a href="DFS.html">Next (Learn about Depth-First Search) ></a>
+						</p>
+	  				</div>
+	  				<div class="tab-pane" id="tab2">
+	  					<div class="page-header">
+	  						<h1><small>Excercises</small></h1>
+	  					</div>
+	  					<p>Explore the graph below using Breadth-First Search (<a href="#" onclick="window.location.reload()">Reload</a> the page for a new graph!)</p>
+	  					<ul>
+	  						<li>Click each node to visit and reveal its neighbors.</li>
+	  						<li>Valid nodes to visit next using BFS will be pulsing.</li>
+	  						<li>Visited nodes will become filled in.</li>
+	  					</ul>
+						<div class="gamewrapper"><div id="holder"></div></div>
+	  				</div>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div id="push"></div>
+  	</div>
+  	<footer id="footer">
+  		<div class="container-fluid">
+  			<div class="credit">
+	  			<p class="pull-right">
+	  				<a href="#">Back to top</a>
+	  			</p>
+	  			<p>
+	  				Designed and built for LCC 3404 by Nathan Fan, David Kearns, Peter Lacey-Bordeaux, and Michael Sambol
+	  			</p>
+  			</div>
+  		</div>
+  	</footer>
+    <!-- JS - At end  to load faster -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- Excercises -->
+    <script src="excercises/raphael.js" type="text/javascript" charset="utf-8"></script>
+    <script src="excercises/graffle.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	function graphsInit(){ BFSinit() };
+    </script>
+  </body>
+</html>

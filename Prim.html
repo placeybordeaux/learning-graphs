@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Graphs in Computer Science</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+  	<div id="wrap">
+	  	<div class="navbar navbar-inverse navbar-static-top">
+	  		<div class="navbar-inner">
+	  			<div class="navigation-width-percent container">
+	  				<a class="brand" href="index.html">Graphs in Computer Science</a>
+					<ul class="nav">
+						<li class="dropdown">
+							<a href="BFS.html">Breadth-First Search</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="BFS.html#tab_tab1">Overview</a>
+									<a href="BFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="DFS.html">Depth-First Search</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="DFS.html#tab_tab1">Overview</a>
+									<a href="DFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li> <!--class="dropdown"-->
+							<a href="Djikstra.html">Dijkstra's Algorithm</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Djikstra.html#tab_tab1">Overview</a>
+									<a href="Djikstra.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>-->
+						</li>
+						<li class="active"> <!--class="dropdown"-->
+							<a href="Prim.html">Prim's Algorithm</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Prim.html#tab_tab1">Overview</a>
+									<a href="Prim.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>-->
+						</li>
+						<li class="dropdown">
+							<a href="Kruskal.html">Kruskal's Algorithm</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Kruskal.html#tab_tab1">Overview</a>
+									<a href="Kruskal.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>	
+						<li>
+							<a href="Resources.html">More Resources</a>
+						</li>	
+					</ul>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	
+	  	<div class="post-nav-pad hero-unit logo">
+	  		<h1>Prim's Algorithm</h1>
+	  		<p>A minimum spanning tree finding algorithm</p>
+	  	</div>
+	  	<div class="container-fluid">
+	  		<div class="tabbable tabs-left">
+	  			<ul class="nav nav-tabs">
+	  				<li class="active">
+	  					<a href="#tab1" data-toggle="tab">Overview</a>
+	  				</li>
+	  				<li>
+	  					<a href="#tab2" data-toggle="tab">Excercises</a>
+	  				</li>
+	  			</ul>
+	  			<div class="tab-content">
+	  				<div class="tab-pane active" id="tab1">
+	  					<div class="page-header">
+	  						<h1><!--Graphs --><small>Overview</small></h1>
+	  					</div>
+	  					<p>
+	  						Prim's algorithm is a greedy algorithm used to find the minimum spanning tree of a graph. A minimum spanning tree connects all vertices with the smallest possible edge weight. The original graph must be a connected, undirected graph with edge weights. Prim's algorithm is very similar to Dijkstra's algorithm as they both use priority queues to select the next edge to add to the output.
+	  					</p>
+						<p>
+							To run Prim's algorithm, pick an arbitrary node and choose the smallest edge connected to that node. Add these two nodes to a list of visited nodes, and examine all edges connected to them. Next, choose the smallest edge that connects to an unvisited node. Add this node the visited list and keep choosing edges until all nodes are visited.
+						</p>
+						<div class="moviewrapper">
+							<iframe width="640" height="360" src="http://www.youtube.com/embed/cplfcGZmX7I" frameborder="0" allowfullscreen></iframe>
+						</div>
+						<p>
+							<bold>Pseudo Code</bold>
+						</p>
+						<p>
+							<bold>Input:</bold> A connected undirected graph G = (V,E) with edge weights. V is a list of vertices, and E is a list of edges.<br/>
+							<bold>Output:</bold> A minimum spanning tree defined by the array prev.<br/>
+							<ol class="codelist">
+								<li>for all vertices u:</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;cost(u) = ∞</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;prev(u) = null</li>
+								 <li>Pick any initial node x</li>
+								 <li>cost(x) = 0</li>
+								 <li>H = makequeue(V) (priority queue)</li>
+							     <li>while H is not empty:</li>
+							      	  <li>&nbsp;&nbsp;&nbsp;&nbsp;v = deletemin(H)</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;for each edge (v,z) in E:</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if cost(z) > w(v,z):</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost(z) = w(v,z)</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev(z) = v</li>
+		               		</ol>	
+	               		<p>
+	               			<bold>Complexity</bold><br/>
+	               		</p>
+						<p>
+							Array: O(|V|^2)<br/>
+							Binary Heap: O((|V| + |E|) log(|V|))<br/>
+							Fibonacci Heap: O(|V| log(|V|)) + |E|)<br/>
+						</p>
+						<p>
+							<bold>Sources</bold>
+							<ul>
+								<li>http://en.wikipedia.org/wiki/Prim's_algorithm</li>
+								<li>http://www.cs.berkeley.edu/~vazirani/algorithms/chap5.pdf</li>
+								<li>http://ku.edu.np/cse/faculty/manoj/daa/prim.pdf</li>
+							</ul>
+						</p>
+						<p class="pull-left" style="padding-top:50px;padding-bottom:50px;">
+							<a href="Djikstra.html">&#60; Previous (Learn about Dijkstra's Algorithm)</a>
+						</p>
+						<p class="pull-right" style="padding-top:50px;padding-bottom:50px;">
+							<a href="Kruskal.html">Next (Learn about Kruskal's Algorithm) ></a>
+						</p>
+	  				</div>
+	  				<div class="tab-pane" id="tab2">
+	  					<div class="page-header">
+	  						<h1><small>Excercises</small></h1>
+	  					</div>
+	  					<p>Perform Prim's Algorithm on the graph below (<a href="#" onclick="window.location.reload()">Reload</a> the page for a new graph!)</p>
+	  					<p></p>
+	  					<ul>
+	  						<li>Click each availible edge with the least weight. Remember to avoid cycles as you build your MST.</li>
+	  						<li>Valid clicks will highlight the selected edge and fill in each end node to mark it as visited.</li>
+	  					</ul>
+						<div class="gamewrapper"><div id="holder"></div></div>
+	  				</div>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div id="push"></div>
+  	</div>
+  	<footer id="footer">
+  		<div class="container-fluid">
+  			<div class="credit">
+	  			<p class="pull-right">
+	  				<a href="#">Back to top</a>
+	  			</p>
+	  			<p>
+	  				Designed and built for LCC 3404 by Nathan Fan, David Kearns, Peter Lacey-Bordeaux, and Michael Sambol
+	  			</p>
+  			</div>
+  		</div>
+  	</footer>
+    <!-- JS - At end  to load faster -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- Excercises -->
+    <script src="excercises/raphael.js" type="text/javascript" charset="utf-8"></script>
+    <script src="excercises/graffle.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	function graphsInit(){ PrimsInit() };
+    </script>
+  </body>
+</html>

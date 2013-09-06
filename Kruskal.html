@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Graphs in Computer Science</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+  	<div id="wrap">
+	  	<div class="navbar navbar-inverse navbar-static-top">
+	  		<div class="navbar-inner">
+	  			<div class="navigation-width-percent container">
+	  				<a class="brand" href="index.html">Graphs in Computer Science</a>
+					<ul class="nav">
+						<li class="dropdown">
+							<a href="BFS.html">Breadth-First Search</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="BFS.html#tab_tab1">Overview</a>
+									<a href="BFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="DFS.html">Depth-First Search</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="DFS.html#tab_tab1">Overview</a>
+									<a href="DFS.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li> <!--class="dropdown"-->
+							<a href="Djikstra.html">Dijkstra's Algorithm</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Djikstra.html#tab_tab1">Overview</a>
+									<a href="Djikstra.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>-->
+						</li>
+						<li class="dropdown">
+							<a href="Prim.html">Prim's Algorithm</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Prim.html#tab_tab1">Overview</a>
+									<a href="Prim.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>
+						</li>
+						<li class="active"> <!--class="dropdown"-->
+							<a href="Kruskal.html">Kruskal's Algorithm</a>
+							<!--<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="Kruskals.html#tab_tab1">Overview</a>
+									<a href="Kruskals.html#tab_tab2">Excercises</a>
+								</li>
+							</ul>-->
+						</li>	
+						<li>
+							<a href="Resources.html">More Resources</a>
+						</li>	
+					</ul>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	
+	  	<div class="post-nav-pad hero-unit logo">
+	  		<h1>Kruskal's Algorithm</h1>
+	  		<p>A minimum spanning tree finding algorithm</p>
+	  	</div>
+	  	<div class="container-fluid">
+	  		<div class="tabbable tabs-left">
+	  			
+	  			<ul class="nav nav-tabs">
+	  				<li class="active">
+	  					<a href="#tab1" data-toggle="tab">Overview</a>
+	  				</li>
+	  				<li>
+	  					<a href="#tab2" data-toggle="tab">Excercises</a>
+	  				</li>
+	  			</ul>
+	  			
+	  			<div class="tab-content">
+	  				<div class="tab-pane active" id="tab1">
+	  					<div class="page-header">
+	  						<h1><!--Graphs --><small>Overview</small></h1>
+	  					</div>
+	  					<p>
+	  						Kruskal's algorithm is a greedy algorithm used to find the minimum spanning tree of a graph. A minimum spanning tree connects all vertices with the smallest possible edge weight. The original graph must be a connected, undirected graph with edge weights.
+  						</p>
+						<p>
+							To run Kruskal's algorithm, first sort all the edges by their weights and place each vertex in it's own tree. Choose the smallest edge and combine the two trees it connects into a new tree. Repeatedly choose the smallest edge that connects two different trees until all nodes are in the same tree. Only choose an edge if it connects two different trees.
+						</p>
+						<div class="moviewrapper">
+							<iframe width="640" height="360" src="http://www.youtube.com/embed/71UQH7Pr9kU" frameborder="0" allowfullscreen></iframe>
+						</div>
+						<p>
+							<bold>Pseudo Code</bold>
+						</p>
+						<p>
+							<bold>Input:</bold> A connected undirected graph G = (V,E) with edge weights. V is a list of vertices, and E is a list of edges.<br/>
+							<bold>Output:</bold> A minimum spanning tree defined by the edges X<br/>
+							<ol class="codelist">
+								<li>for all vertices u:</li>
+								      <li>&nbsp;&nbsp;&nbsp;&nbsp;makeset(u)</li>
+								 <li>X = {}</li>
+								 <li>sort the edges E by weight</li>
+								 <li>for all edges (u,v) in E, in order of increasing weight:</li>
+							      	  <li>&nbsp;&nbsp;&nbsp;&nbsp;If find(u) != find(v):</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add edge (u,v) to X</li>
+								          <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;union(u,v)</li>
+		               		</ol>
+		               		<br/>
+		               		<ol class="codelist">
+		               			<li>procedure makeset(x)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;pointer(x) = x</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;rank(x) = 0</li>
+		               		</ol>
+		               		<br/>
+		               		<ol class="codelist">
+		               			<li>function find(x)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;while x != pointer(x):</li>
+		               				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = pointer(x)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;return x</li>
+		               		</ol>
+		               		<br/>
+		               		<ol class="codelist">
+		               			<li>procedure union(x,y)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;s = find(x)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;t = find(y)</li>
+		               			<li>&nbsp;&nbsp;&nbsp;&nbsp;if s = t:</li>
+		               				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return</li>
+	               				<li>&nbsp;&nbsp;&nbsp;&nbsp;if rank(s) > rank(t):</li>
+	               					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pointer(t) = s</li>
+	               				<li>&nbsp;&nbsp;&nbsp;&nbsp;else:</li>
+	               					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pointer(s) = t</li>
+	               					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if rank(s) = rank(t)</li>
+	               						<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rank(t) = rank(t) + 1</li>
+		               		</ol>
+	               		<p>
+	               			<bold>Complexity</bold><br/>
+	               		</p>
+						<p>
+							makeset: O(|V|)<br/>
+							find: O(2|E|)<br/>
+							union: O(|V| - 1)<br/>
+							sorting: O(|E| log(|E|))<br/>
+							overall: O(|E| log(|E|))<br/>
+						</p>
+						<p>
+							<bold>Sources</bold>
+							<ul>
+								<li>http://en.wikipedia.org/wiki/Kruskal's_algorithm</li>
+								<li>http://www.cs.berkeley.edu/~vazirani/algorithms/chap5.pdf</li>
+							</ul>
+						</p>
+						<p class="pull-left" style="padding-top:50px;padding-bottom:50px;">
+							<a href="Prim.html">&#60; Previous (Learn about Prim's Algorithm)</a>
+						</p>
+						<p class="pull-right" style="padding-top:50px;padding-bottom:50px;">
+							<a href="Resources.html">Next (Check out some of our favorite learning resources) ></a>
+						</p>
+	  				</div>
+	  				
+	  				<div class="tab-pane" id="tab2">
+	  					<div class="page-header">
+	  						<h1><small>Excercises</small></h1>
+	  					</div>
+	  					<p>Perform Kruskal's Algorithm on the graph below (<a href="#" onclick="window.location.reload()">Reload</a> the page for a new graph!)</p>
+	  					<ul>
+	  						<li>Click each availible edge with the least weight. Remember to avoid cycles as you build your MST.</li>
+	  						<li>Valid clicks will highlight the selected edge and fill in each end node to mark it as visited.</li>
+	  					</ul>	  				
+						<div class="gamewrapper"><div id="holder"></div></div>
+	  				</div>
+	  				
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div id="push"></div>
+  	</div>
+  	<footer id="footer">
+  		<div class="container-fluid">
+  			<div class="credit">
+	  			<p class="pull-right">
+	  				<a href="#">Back to top</a>
+	  			</p>
+	  			<p>
+	  				Designed and built for LCC 3404 by Nathan Fan, David Kearns, Peter Lacey-Bordeaux, and Michael Sambol
+	  			</p>
+  			</div>
+  		</div>
+  	</footer>
+    <!-- JS - At end  to load faster -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- Excercises -->
+    <script src="excercises/raphael.js" type="text/javascript" charset="utf-8"></script>
+    <script src="excercises/graffle.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	function graphsInit(){ KruskalsInit() };
+    </script>
+  </body>
+</html>
