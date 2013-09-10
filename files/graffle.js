@@ -21,18 +21,20 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
         {x: bb2.x - 1, y: bb2.y + bb2.height / 2},
         {x: bb2.x + bb2.width + 1, y: bb2.y + bb2.height / 2}],
         d = {}, dis = [];
+    var dx, dy;
     for (var i = 0; i < 4; i++) {
         for (var j = 4; j < 8; j++) {
-            var dx = Math.abs(p[i].x - p[j].x),
+            dx = Math.abs(p[i].x - p[j].x);
                 dy = Math.abs(p[i].y - p[j].y);
-            if ((i == j - 4) || (((i != 3 && j != 6) || p[i].x < p[j].x) && ((i != 2 && j != 7) || p[i].x > p[j].x) && ((i != 0 && j != 5) || p[i].y > p[j].y) && ((i != 1 && j != 4) || p[i].y < p[j].y))) {
+            if ((i == j - 4) || (((i != 3 && j != 6) || p[i].x < p[j].x) && ((i != 2 && j != 7) || p[i].x > p[j].x) && ((i !== 0 && j != 5) || p[i].y > p[j].y) && ((i != 1 && j != 4) || p[i].y < p[j].y))) {
                 dis.push(dx + dy);
                 d[dis[dis.length - 1]] = [i, j];
             }
         }
     }
-    if (dis.length == 0) {
-        var res = [0, 4];
+    var res;
+    if (dis.length === 0) {
+        res = [0, 4];
     } else {
         res = d[Math.min.apply(Math, dis)];
     }
@@ -63,9 +65,9 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
             line: this.path(path).attr({stroke: "#5A6351", "stroke-width": 3, fill: "none"}),
             from: obj1,
             to: obj2,
-            weight: parseInt(weight),
+            weight: parseInt(weight, 10),
             backdrop_for_text: c
-        }
+        };
         return_obj.line.p = return_obj;
         return_obj.text.p = return_obj;
         return_obj.backdrop_for_text.p = return_obj;
@@ -133,7 +135,7 @@ var get_graph = function (weighted) {
 		return weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
 	}
 		return graphs[Math.floor(Math.random()*weighted_graphs.length)];
-}
+};
 
 
 var el;
@@ -146,7 +148,7 @@ window.onload = function () {
 
         set_text = function (t) {
             notice_text.attr({"text": t});
-            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<")});
+            notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<");});
         };
 
         algorithm = Prims();
@@ -176,7 +178,7 @@ window.onload = function () {
                     }
                 }
             }
-            for (var i = 0; i < algorithm.visited.length; i++){
+            for (i = 0; i < algorithm.visited.length; i++){
                     algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
             }
         })();
@@ -204,7 +206,7 @@ var Kruskals = function() {
         g.nodes[i].rank = 0;
         g.nodes[i].pointer = g.nodes[i];
     }
-    for(var i=0;i<g.edges.length;i++){
+    for(i=0;i<g.edges.length;i++){
         g.edges[i].line.animate({"opacity": 0.6},500);
         g.edges[i].text.animate({"opacity": 1},500);
         g.edges[i].line.show();
