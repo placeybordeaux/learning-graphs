@@ -55,7 +55,7 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
 
 
     if (line && line.line) {
-        line.bg && line.bg.attr({path: path});
+        line.bg.attr({path: path});
         line.line.attr({path: path});
     } else {
         var color = typeof line == "string" ? line : "#000";
@@ -218,8 +218,9 @@ var Kruskals = function() {
        if('p' in e){
             e = e.p;
             var j=0;
+            var c;
              while(j<g.edges.length){
-                    var c = g.edges[j].to;
+                    c = g.edges[j].to;
                     b = g.edges[j].from;
                     while(c.pointer != c){
                         c = c.pointer;
@@ -239,7 +240,7 @@ var Kruskals = function() {
                         return false;
                     }
                 }
-                var c = e.to,
+                c = e.to;
                 b = e.from;
                 while(c.pointer != c){
                     c = c.pointer;
@@ -269,9 +270,9 @@ var Kruskals = function() {
        if(g.nodes.length == a.counter + 1){
            success();
        }
-    }
+    };
     return a;
-}
+};
 
 var Prims = function() {
     a = algo.create();
@@ -291,7 +292,7 @@ var Prims = function() {
                         if(a.visited.contains(edges[j].to) ^ a.visited.contains(edges[j].from)){
                             if(edges[j].weight < e.weight){
                                 set_text("There is an edge with a lower weight");
-                                return false
+                                return false;
                             }
                         }
                     }
@@ -313,9 +314,9 @@ var Prims = function() {
         }
  
         }
-    }
+    };
     return a;
-    }
+    };
 
 var DFS = function (){
     a = algo.create();
@@ -333,7 +334,7 @@ var DFS = function (){
                     a.frontier.push(ns[i]);
                 }
             }
-            while(a.frontier.length == 0 && a.next_frontier.length > 0){
+            while(a.frontier.length === 0 && a.next_frontier.length > 0){
                 a.frontier = a.next_frontier.pop();
             }
         }else {
@@ -342,7 +343,7 @@ var DFS = function (){
         if(a.visited.length == g.nodes.length){
             success();
         }
-    }
+    };
     return a;
 };
 
@@ -360,18 +361,17 @@ var BFS = function (){
                     a.next_frontier.push(nodes_[i]);
                 }
             }
-            while(a.frontier.length == 0 && a.next_frontier.length > 0){
+            while(a.frontier.length === 0 && a.next_frontier.length > 0){
                 a.frontier = a.next_frontier;
                 a.next_frontier = [];
             }
         }else{
-	    //clicked a node that can't be explored
             set_text("Try clicking the flashing nodes");
         }
         if(a.visited.length == g.nodes.length){
             success();
         }
-    }
+    };
     return a;
 };
 
@@ -384,7 +384,7 @@ var reveal_from_node = function (n) {
             nodes_[i].da_glow.show();
         }
         var edges_ = g.get_edges(n);
-        for (var i=0;i<edges_.length;i++){
+        for (i=0;i<edges_.length;i++){
             edges_[i].line.show();
             edges_[i].text.show();
             edges_[i].backdrop_for_text.show();
@@ -414,13 +414,14 @@ graph.create = function (nodes_,edges_,weights_) {
         n.hide();
         n.da_glow = n.glow({"width": 3, "opacity": 0.25}).hide();
         nodes.push(n);
-    };
+    }
     //edge creation
-    for (var i=0; i<edges_.length; i++){
+    for (i=0; i<edges_.length; i++){
+        var c;
         if(weights_){
-            var c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff", Math.ceil((Math.random()*7)));
+            c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff", Math.ceil((Math.random()*7)));
         }else{
-            var c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff");
+            c = r.connection(nodes[edges_[i][0]],nodes[edges_[i][1]], "#fff");
         }
         c.line.click(click);
         c.text.click(click);
@@ -431,7 +432,7 @@ graph.create = function (nodes_,edges_,weights_) {
         c.text.hide();
         c.backdrop_for_text.hide();
         edges.push(c);
-    };
+    }
     return {nodes: nodes,edges: edges, neighbors: graph.neighbors, get_edges: graph.get_edges};
 };
 
