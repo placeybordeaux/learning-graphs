@@ -80,82 +80,69 @@ Raphael.fn.connection = function (obj1, obj2, line, weight, bg) {
 
 
 //monkey patching stuff
-
 Array.prototype.contains = function(obj) {
-        var i;
-        for (i = 0; i < this.length; i++) {
-            if (this[i] === obj) {return true;}
-        }
-        return false;
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] === obj) {return true;}
+    }
+    return false;
 };
-
 Array.prototype.remove = function(obj) {
-        var i;
-        for (i = 0; i < this.length; i++) {
-            if (this[i] === obj) {
-                this.splice(i,1);
-                this.remove(obj);
-                return null;
-            }
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] === obj) {
+            this.splice(i,1);
+            this.remove(obj);
+            return null;
+        }
+    }
+};
+
+//hand made graphs, takes a variable if you want to have a weighted one returned or not
+var get_graph = function (weighted) {
+	if(weighted){
+            weighted_graphs = [
+                graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                        [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
+                        [1,2,3,4,5,6,2,3,2,1]),
+                graph.create([[240,20],[200,120],[280,120],[160,220],[240,220],[300,220]],
+                        [[0,2],[0,1],[1,3],[1,4],[2,5]],
+                        [5,3,3,4,1,2]),
+                graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                        [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
+                        [1,3,2,5,2,3,4,2]),
+                graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                        [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
+                        [3,4,5,6,4,3,4,7,3,1,3,2,3])
+            ];
+            return weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
+	} else {
+            graphs = [
+                graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
+                        [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
+         
+                graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
+                        [[0,2],[0,1],[1,3],[1,4],[2,5]]),
+                graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
+                        [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
+                graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
+                        [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
+            ];
+            return graphs[Math.floor(Math.random()*weighted_graphs.length)];
         }
 };
-
-var get_graph = function (weighted) {
-        graphs = [
-        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
-                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]]),
- 
-        graph.create([[140,20],[120,80],[160,80],[100,120],[130,120],[170,120]],
-                [[0,2],[0,1],[1,3],[1,4],[2,5]]),
-        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
-                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6]]),
-        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
-                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]])
- 
- 
-            ];
-
-        weighted_graphs = [
-        graph.create([[40,40],[100,40],[40,100],[160,100],[160,180],[400,100],[420,420]],
-                [[0,2],[0,1],[1,3],[3,4],[3,5],[2,3],[4,6],[1,5],[5,6]],
-                [1,2,3,4,5,6,2,3,2,1]),
-        graph.create([[240,20],[200,120],[280,120],[160,220],[240,220],[300,220]],
-                [[0,2],[0,1],[1,3],[1,4],[2,5]],
-                [5,3,3,4,1,2]),
-        graph.create([[340,200],[310,280],[305,210],[260,180],[300,340],[400,120],[420,20]],
-                [[0,1],[1,2],[2,3],[3,4],[4,1],[1,5],[5,6],[3,6]],
-                [1,3,2,5,2,3,4,2]),
-        graph.create([[40,40],[140,40],[240,40],[340,40],[440,40],[540,40],[320,240],[60,300],[300,300],[400,400]],
-                [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,6],[1,6],[1,7],[6,7],[7,8],[8,9],[5,9]],
-                [3,4,5,6,4,3,4,7,3,1,3,2,3])
- 
-            ];
-
-	if(weighted){
-		return weighted_graphs[Math.floor(Math.random()*weighted_graphs.length)];
-	}
-		return graphs[Math.floor(Math.random()*weighted_graphs.length)];
-};
-
 
 var el;
 window.onload = function () {
         r = Raphael("holder", 640, 480);
-
-	g = get_graph(true);
-
         notice_text = r.text(40,450, "").attr({"text-anchor": "start","font": "30px Helvetica", "color": "#000"});
-
         set_text = function (t) {
             notice_text.attr({"text": t});
             notice_text.animate({"opacity": 1}, 600, "<", function () {notice_text.animate({"opacity": 0}, 4000, "<");});
         };
 
+	g = get_graph(true);
         algorithm = Prims();
-        r.safari();
 
         img = r.image("files/dholler_ok.png",200,100,200,200).hide();
-
         success = (function () {
             img.show();
             img.animate({"transform": "s4"}, 2000);
@@ -182,7 +169,7 @@ window.onload = function () {
                     algorithm.visited[i].animate(Raphael.animation({"r": 10}, 500));
             }
         })();
-        
+        r.safari();
 };
 
 //algorithm stuff
