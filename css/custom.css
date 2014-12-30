@@ -1,4 +1,4 @@
-.logo{
+.logo {
 	background-image:url('../img/graph.png');
 	border-bottom:2px solid black;
 	background-color: #FFF;
@@ -22,8 +22,15 @@
 }
 
 div.moviewrapper {
-	width: 640px;
 	margin: 25px auto;
+}
+
+div.moviewrapper.small {
+	width: 420px;
+}
+
+div.moviewrapper.large {
+	width: 560px;
 }
 
 bold {
